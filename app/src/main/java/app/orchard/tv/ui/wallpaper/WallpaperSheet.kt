@@ -72,6 +72,8 @@ import androidx.compose.ui.unit.dp
 import app.orchard.tv.R
 import app.orchard.tv.settings.AerialSettings
 import app.orchard.tv.settings.ClockHours
+import app.orchard.tv.settings.ClockSpacing
+import app.orchard.tv.settings.ClockWeight
 import app.orchard.tv.settings.Restricted
 import app.orchard.tv.settings.RestrictedKind
 import app.orchard.tv.settings.FocusStyle
@@ -261,6 +263,16 @@ fun WallpaperSheet(
                         R.string.st_clock_size, stringResource(R.string.st_clock_size_hint), note,
                         listOf(false to R.string.st_clock_small, true to R.string.st_clock_large),
                         AerialSettings.largeClock, AerialSettings::chooseLargeClock,
+                    )
+                    Choices(
+                        R.string.st_clock_weight, null, note,
+                        ClockWeight.choices.map { it to it.label },
+                        AerialSettings.clockWeight, AerialSettings::chooseClockWeight,
+                    )
+                    Choices(
+                        R.string.st_clock_spacing, null, note,
+                        ClockSpacing.entries.map { it to it.label },
+                        AerialSettings.clockSpacing, AerialSettings::chooseClockSpacing,
                     )
                     Choices(
                         R.string.st_clock_hours, stringResource(R.string.st_clock_hours_hint), note,

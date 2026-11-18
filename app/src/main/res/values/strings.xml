@@ -327,4 +327,12 @@
     <string name="kids_blocked">%s is not allowed here</string>
     <string name="kids_warn">%d min of TV left</string>
     <string name="kids_warn_break">A break in %d min</string>
+
+    <string name="st_clock_weight">Clock Weight</string>
+    <string name="st_clock_weight_regular">Regular</string>
+    <string name="st_clock_weight_extra_bold">Extra Bold</string>
+    <string name="st_clock_spacing">Clock Spacing</string>
+    <string name="st_clock_spacing_compact">Tight</string>
+    <string name="st_clock_spacing_wide">Wide</string>
+    <string name="st_clock_typography_default">Default</string>
 </resources>

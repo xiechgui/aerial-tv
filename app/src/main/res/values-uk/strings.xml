@@ -319,4 +319,12 @@
     <string name="kids_blocked">«%s» тут недоступний</string>
     <string name="kids_warn">Лишилося %d хв</string>
     <string name="kids_warn_break">Перерва за %d хв</string>
+
+    <string name="st_clock_weight">Товщина цифр годинника</string>
+    <string name="st_clock_weight_regular">Звичайна</string>
+    <string name="st_clock_weight_extra_bold">Дуже жирна</string>
+    <string name="st_clock_spacing">Інтервал між цифрами</string>
+    <string name="st_clock_spacing_compact">Вузький</string>
+    <string name="st_clock_spacing_wide">Широкий</string>
+    <string name="st_clock_typography_default">Типовий</string>
 </resources>

@@ -64,6 +64,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.graphics.FilterQuality
@@ -675,7 +676,7 @@ fun ShelfClock(
         )
         BasicText(
             timeText(now),
-            style = Type.Clock.copy(shadow = shadow),
+            style = Type.Clock.withHomeClockTypography().copy(shadow = shadow),
             modifier = Modifier.padding(top = 16.dp)
                 .toSaverClock(toSaver, Type.Clock.fontSize, 0.dp, drift)
                 .capBox(Type.Clock.fontSize),
@@ -785,7 +786,8 @@ fun CornerClock(now: LocalDateTime, modifier: Modifier = Modifier, toSaver: () -
     }
     Row(modifier.height(34.dp), verticalAlignment = Alignment.CenterVertically) {
         BasicText(
-            timeText(now), style = Type.SmallClock.copy(fontSize = Type.Title.fontSize, color = dim, shadow = shadow),
+            timeText(now),
+            style = Type.SmallClock.withHomeClockTypography().copy(fontSize = Type.Title.fontSize, color = dim, shadow = shadow),
             modifier = Modifier.toSaverClock(toSaver, Type.Title.fontSize, Type.Title.fontSize.value.dp * CAP_TOP, drift),
         )
         Weather.now?.takeIf { AerialSettings.showWeather }?.let { w ->
@@ -795,6 +797,11 @@ fun CornerClock(now: LocalDateTime, modifier: Modifier = Modifier, toSaver: () -
         }
     }
 }
+
+private fun TextStyle.withHomeClockTypography() = copy(
+    fontWeight = AerialSettings.clockWeight.weight?.let { FontWeight(it) } ?: fontWeight,
+    letterSpacing = (letterSpacing.value + AerialSettings.clockSpacing.offsetEm).em,
+)
 
 private fun glyphFor(w: WeatherNow): Glyph = when (w.kind) {
     WeatherKind.Clear -> if (w.day) Glyph.Sun else Glyph.Moon

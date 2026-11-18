@@ -145,6 +145,7 @@ class HomeView(context: Context, private val host: Host) : FrameLayout(context) 
     fun applySettings() {
         clock.large = LiteSettings.largeClock
         clock.alignEnd = LiteSettings.clockRight
+        clock.applyTypography()
         clock.refresh()
         (clock.parent as? android.view.ViewGroup)?.removeView(clock)
         if (!LiteSettings.largeClock && LiteSettings.clockRight) {

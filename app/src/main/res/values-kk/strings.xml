@@ -319,4 +319,12 @@
     <string name="kids_blocked">«%s» мұнда қолжетімсіз</string>
     <string name="kids_warn">%d мин қалды</string>
     <string name="kids_warn_break">%d минуттан кейін үзіліс</string>
+
+    <string name="st_clock_weight">Сағат цифрларының қалыңдығы</string>
+    <string name="st_clock_weight_regular">Қалыпты</string>
+    <string name="st_clock_weight_extra_bold">Өте қалың</string>
+    <string name="st_clock_spacing">Цифрлар аралығы</string>
+    <string name="st_clock_spacing_compact">Тар</string>
+    <string name="st_clock_spacing_wide">Кең</string>
+    <string name="st_clock_typography_default">Әдепкі</string>
 </resources>

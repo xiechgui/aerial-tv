@@ -91,6 +91,7 @@ val copySources by tasks.registering(Copy::class) {
     from(rootProject.file("app/src/main/java/app/orchard/tv/system/MitvPanel.kt"))
     from(rootProject.file("app/src/main/java/app/orchard/tv/system/DeviceProfile.kt"))
     from(rootProject.file("app/src/main/java/app/orchard/tv/system/OutputDevice.kt"))
+    from(rootProject.file("app/src/main/java/app/orchard/tv/settings/ClockTypography.kt"))
     into(sharedSources.map { it.dir("app/orchard/tv/lite") })
     // Into Lite's package; Compose's state and AndroidX's prefs.edit {} come from Lite's Shims.kt.
     filter { line ->

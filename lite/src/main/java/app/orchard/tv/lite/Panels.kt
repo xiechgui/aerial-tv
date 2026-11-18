@@ -562,6 +562,10 @@ class Personalize(
                 LiteSettings.clockRight) { LiteSettings.chooseClockRight(it); onLayout() }
             choices(R.string.st_clock_size, string(R.string.st_clock_size_hint), listOf(false to R.string.st_clock_small, true to R.string.st_clock_large),
                 LiteSettings.largeClock) { LiteSettings.chooseLargeClock(it); onLayout() }
+            choices(R.string.st_clock_weight, null, ClockWeight.choices.map { it to it.label },
+                LiteSettings.clockWeight) { LiteSettings.chooseClockWeight(it); onLayout() }
+            choices(R.string.st_clock_spacing, null, ClockSpacing.entries.map { it to it.label },
+                LiteSettings.clockSpacing) { LiteSettings.chooseClockSpacing(it); onLayout() }
             choices(R.string.st_clock_hours, string(R.string.st_clock_hours_hint),
                 listOf(ClockHours.System to R.string.st_clock_hours_system, ClockHours.H24 to R.string.st_clock_hours_24, ClockHours.H12 to R.string.st_clock_hours_12),
                 LiteSettings.clockHours) { LiteSettings.chooseClockHours(it); onLayout() }

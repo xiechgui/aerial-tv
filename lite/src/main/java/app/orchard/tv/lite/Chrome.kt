@@ -60,6 +60,16 @@ class ClockView(context: Context) : View(context) {
 
     private var time = ""
     private var date = ""
+    private val smallSpacing get() = 0.05f + LiteSettings.clockSpacing.offsetEm
+    private val largeSpacing get() = -0.04f + LiteSettings.clockSpacing.offsetEm
+
+    fun applyTypography() {
+        val weight = LiteSettings.clockWeight.weight
+        smallPaint.typeface = Ui.font(weight ?: 600)
+        bigPaint.typeface = Ui.font(weight ?: 700, opticalSize = 32f)
+        requestLayout()
+        invalidate()
+    }
 
     fun refresh() {
         val now = System.currentTimeMillis()
@@ -84,7 +94,7 @@ class ClockView(context: Context) : View(context) {
     private fun smallWeatherText(w: WeatherLine) = listOfNotNull(w.place?.takeIf { it.length <= 12 }, context.getString(R.string.weather_temperature, w.celsius)).joinToString(" ")
 
     private fun smallWidth(): Float {
-        var x = Ui.width(time, smallPaint, 0.05f)
+        var x = Ui.width(time, smallPaint, smallSpacing)
         val w = weather ?: return x
         x += Ui.px(16f) + Ui.pxi(18f) + Ui.px(6f) + smallWeather.measureText(smallWeatherText(w))
         return x
@@ -125,7 +135,8 @@ class ClockView(context: Context) : View(context) {
         }
         // The time, 16 under the date's baseline to its capitals.
         y += Ui.px(16f + 104f * Ui.CAP_HEIGHT)
-        Ui.draw(c, time, if (alignEnd) start(Ui.width(time, bigPaint, -0.04f)) + Ui.px(4f) else -Ui.px(4f), y, bigPaint, -0.04f)
+        val timeStart = if (alignEnd) start(Ui.width(time, bigPaint, largeSpacing)) + Ui.px(4f) else -Ui.px(4f)
+        Ui.draw(c, time, timeStart, y, bigPaint, largeSpacing)
         val w = weather ?: return
         // The weather, 18 under the time.
         y += Ui.px(18f + 16f * Ui.CAP_HEIGHT)
@@ -143,9 +154,9 @@ class ClockView(context: Context) : View(context) {
     private fun drawSmall(c: Canvas) {
         val h = height.toFloat()
         fun baseline(p: Paint) = h / 2 - (p.descent() + p.ascent()) / 2
-        Ui.draw(c, time, 0f, baseline(smallPaint), smallPaint, 0.05f)
+        Ui.draw(c, time, 0f, baseline(smallPaint), smallPaint, smallSpacing)
         val w = weather ?: return
-        var x = Ui.width(time, smallPaint, 0.05f) + Ui.px(16f)
+        var x = Ui.width(time, smallPaint, smallSpacing) + Ui.px(16f)
         val g = Ui.pxi(18f)
         c.drawBitmap(Glyphs.image(w.glyph, g, 0xEBFFFFFF.toInt()), x, (h - g) / 2f, glyphPaint)
         x += g + Ui.px(6f)

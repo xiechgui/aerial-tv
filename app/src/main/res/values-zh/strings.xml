@@ -326,4 +326,12 @@
     <string name="kids_blocked">「%s」不在这个模式里</string>
     <string name="kids_warn">还能看 %d 分钟</string>
     <string name="kids_warn_break">%d 分钟后休息一下</string>
+
+    <string name="st_clock_weight">时钟字重</string>
+    <string name="st_clock_weight_regular">常规</string>
+    <string name="st_clock_weight_extra_bold">特粗</string>
+    <string name="st_clock_spacing">时钟字间距</string>
+    <string name="st_clock_spacing_compact">紧凑</string>
+    <string name="st_clock_spacing_wide">宽松</string>
+    <string name="st_clock_typography_default">默认</string>
 </resources>

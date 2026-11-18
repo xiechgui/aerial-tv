@@ -65,6 +65,8 @@ object LiteSettings {
     val showAllNames: Boolean get() = chosenAllNames || (Kids.active && Kids.kind == KidsKind.Elders)
     var clockRight = false; private set
     var largeClock = false; private set
+    var clockWeight = ClockWeight.Default; private set
+    var clockSpacing = ClockSpacing.Default; private set
     var clockHours = ClockHours.System; private set
     /** No app menus on Home or in folders, as the full app's homeLocked (issues #717 #1013 #1106). */
     var homeLocked = false; private set
@@ -103,6 +105,8 @@ object LiteSettings {
         chosenAllNames = prefs.getBoolean("show_all_names", false)
         clockRight = prefs.getBoolean("clock_right", false)
         largeClock = prefs.getBoolean("large_clock", false)
+        clockWeight = ClockWeight.of(prefs.getString("clock_weight", null))
+        clockSpacing = ClockSpacing.of(prefs.getString("clock_spacing", null))
         clockHours = ClockHours.of(prefs.getString("clock_hours", null))
         homeLocked = prefs.getBoolean("home_locked", false)
         photoMinutes = prefs.getInt("photo_minutes", DAY_MINUTES).takeIf { it in PHOTO_MINUTES } ?: DAY_MINUTES
@@ -132,6 +136,8 @@ object LiteSettings {
     fun chooseShowAllNames(v: Boolean) { chosenAllNames = v; put { putBoolean("show_all_names", v) } }
     fun chooseClockRight(v: Boolean) { clockRight = v; put { putBoolean("clock_right", v) } }
     fun chooseLargeClock(v: Boolean) { largeClock = v; put { putBoolean("large_clock", v) } }
+    fun chooseClockWeight(v: ClockWeight) { clockWeight = v; put { putString("clock_weight", v.key) } }
+    fun chooseClockSpacing(v: ClockSpacing) { clockSpacing = v; put { putString("clock_spacing", v.key) } }
     fun choosePhotoMinutes(v: Int) { if (v in PHOTO_MINUTES) { photoMinutes = v; put { putInt("photo_minutes", v) } } }
     fun chooseHomeLocked(v: Boolean) { homeLocked = v; put { putBoolean("home_locked", v) } }
     fun chooseClockHours(v: ClockHours) { clockHours = v; put { putString("clock_hours", v.key) } }

@@ -155,6 +155,8 @@ object AerialSettings {
 
     /** The date and weather over a big clock above the top row, instead of one small line in the corner. */
     var largeClock by mutableStateOf(false); private set
+    var clockWeight by mutableStateOf(ClockWeight.Default); private set
+    var clockSpacing by mutableStateOf(ClockSpacing.Default); private set
 
     /**
      * How often "My Photos, in turn" moves to the next photo, in minutes; a day (1440) unless the
@@ -254,6 +256,8 @@ object AerialSettings {
         chosenColumns = prefs.getInt("home_columns", DEFAULT_HOME_COLUMNS).takeIf { it in HOME_COLUMNS } ?: DEFAULT_HOME_COLUMNS
         clockRight = prefs.getBoolean("clock_right", false)
         largeClock = prefs.getBoolean("large_clock", false)
+        clockWeight = ClockWeight.of(prefs.getString("clock_weight", null))
+        clockSpacing = ClockSpacing.of(prefs.getString("clock_spacing", null))
         clockHours = ClockHours.of(prefs.getString("clock_hours", null))
         homeLocked = prefs.getBoolean("home_locked", false)
         photoMinutes = prefs.getInt("photo_minutes", DAY_MINUTES).takeIf { it in PHOTO_MINUTES } ?: DAY_MINUTES
@@ -352,6 +356,16 @@ object AerialSettings {
     fun chooseLargeClock(on: Boolean) {
         largeClock = on
         app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit { putBoolean("large_clock", on) }
+    }
+
+    fun chooseClockWeight(weight: ClockWeight) {
+        clockWeight = weight
+        app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit { putString("clock_weight", weight.key) }
+    }
+
+    fun chooseClockSpacing(spacing: ClockSpacing) {
+        clockSpacing = spacing
+        app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit { putString("clock_spacing", spacing.key) }
     }
 
     fun choosePhotoMinutes(minutes: Int) {
