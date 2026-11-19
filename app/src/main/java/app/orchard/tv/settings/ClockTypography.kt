@@ -1,5 +1,6 @@
 package app.orchard.tv.settings
 
+import android.content.Context
 import android.os.Build
 import app.orchard.tv.R
 
@@ -24,5 +25,19 @@ enum class ClockSpacing(val key: String, val label: Int, val offsetEm: Float) {
 
     companion object {
         fun of(key: String?) = entries.firstOrNull { it.key == key } ?: Default
+    }
+}
+
+enum class ClockFontSize(val percentChange: Int) {
+    Smaller(-20), Small(-10), Default(0), Large(10), Larger(20);
+
+    val scale: Float get() = (100 + percentChange) / 100f
+
+    fun label(context: Context): String =
+        if (this == Default) context.getString(R.string.st_clock_typography_default)
+        else "%+d%%".format(percentChange)
+
+    companion object {
+        fun of(percentChange: Int) = entries.firstOrNull { it.percentChange == percentChange } ?: Default
     }
 }

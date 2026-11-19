@@ -129,7 +129,7 @@ private val LargeClockTop = 80.dp
  * From the large clock's top to where the shelf may start: its weather line ends some 136 dp down
  * (216 dp from the top, MiTV-MFTR0, 1.65), and a gap.
  */
-private val LargeClockHeight = 152.dp
+private val DefaultLargeClockHeight = 152.dp
 
 /**
  * The highest the large clock may go to make room for two rows, level with the status pill. Only
@@ -164,7 +164,7 @@ internal fun gridGap(columns: Int): Dp = when (columns) {
 internal fun restTileWidth(screenW: Dp, columns: Int): Dp = (screenW - GridMargin * 2 - gridGap(columns) * (columns - 1)) / columns
 
 /** Grid geometry for the screen at hand. On a 1080p TV this is a 960×540 dp canvas. */
-private class GridMetrics(screenW: Dp, screenH: Dp, val columns: Int, oneRow: Boolean, plateNames: Boolean, peek: Boolean, plate: Boolean, largeClock: Boolean, clockRight: Boolean) {
+private class GridMetrics(screenW: Dp, screenH: Dp, val columns: Int, oneRow: Boolean, plateNames: Boolean, peek: Boolean, plate: Boolean, largeClockHeight: Dp?, clockRight: Boolean) {
     val margin = GridMargin
     val gap = gridGap(columns)
     val tileW = restTileWidth(screenW, columns)
@@ -198,12 +198,12 @@ private class GridMetrics(screenW: Dp, screenH: Dp, val columns: Int, oneRow: Bo
      * cap top: the clock's lines are boxed to their capitals. Two rows that do not fit under it
      * (four a row with every name) take it up beside the pill, at the left.
      */
-    val clockY = if (oneRow || !largeClock) LargeClockTop else
-        (twoRowFit - (if (plate) PlatePadV else 0.dp) - LargeClockHeight)
+    val clockY = if (oneRow || largeClockHeight == null) LargeClockTop else
+        (twoRowFit - (if (plate) PlatePadV else 0.dp) - largeClockHeight)
             .coerceIn(if (clockRight) LargeClockTop else LargeClockTopMin, LargeClockTop)
 
     /** The highest two rows may start: under the large clock's weather line. What does not fit lifts in on the second row ([shelfLift]). */
-    private val twoRowFloor = if (largeClock) clockY + LargeClockHeight + if (plate) PlatePadV else 0.dp else 0.dp
+    private val twoRowFloor = if (largeClockHeight != null) clockY + largeClockHeight + if (plate) PlatePadV else 0.dp else 0.dp
 
     /**
      * In two-row mode both rows sit low, laid from the bottom up ([twoRowFit]). In one-row mode, or
@@ -557,9 +557,13 @@ fun HomeScreen(
         val peek = AerialSettings.peekNextRow
         val hasPlate = AerialSettings.homePlate
         val largeClock = AerialSettings.largeClock
+        val largeTimeFontSize = Type.Clock.fontSize * AerialSettings.clockFontSize.scale
+        val largeClockHeight = if (largeClock) with(density) {
+            DefaultLargeClockHeight + (largeTimeFontSize.toDp() - Type.Clock.fontSize.toDp()) * CAP_HEIGHT
+        } else null
         val clockRightNow = AerialSettings.clockRight
-        val metrics = remember(maxWidth, maxHeight, columns, oneRow, plateNames, peek, hasPlate, largeClock, clockRightNow) {
-            GridMetrics(maxWidth, maxHeight, columns, oneRow, plateNames, peek, hasPlate, largeClock, clockRightNow)
+        val metrics = remember(maxWidth, maxHeight, columns, oneRow, plateNames, peek, hasPlate, largeClockHeight, clockRightNow) {
+            GridMetrics(maxWidth, maxHeight, columns, oneRow, plateNames, peek, hasPlate, largeClockHeight, clockRightNow)
         }
         val collapsePx = with(density) { metrics.collapse.toPx() }
 
@@ -774,6 +778,7 @@ fun HomeScreen(
                         toSaver = { clockToSaver.value },
                         saving = vm.screensaverVisible,
                         away = carrying,
+                        timeFontSize = largeTimeFontSize,
                     )
                 } else if (!clockRight) {
                     CornerClock(

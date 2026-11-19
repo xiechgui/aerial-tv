@@ -334,4 +334,5 @@
     <string name="st_clock_spacing_compact">紧凑</string>
     <string name="st_clock_spacing_wide">宽松</string>
     <string name="st_clock_typography_default">默认</string>
+    <string name="st_clock_font_size">时钟字号</string>
 </resources>

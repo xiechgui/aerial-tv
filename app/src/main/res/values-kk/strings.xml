@@ -327,4 +327,5 @@
     <string name="st_clock_spacing_compact">Тар</string>
     <string name="st_clock_spacing_wide">Кең</string>
     <string name="st_clock_typography_default">Әдепкі</string>
+    <string name="st_clock_font_size">Цифрлар өлшемі</string>
 </resources>

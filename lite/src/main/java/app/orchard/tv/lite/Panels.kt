@@ -562,6 +562,8 @@ class Personalize(
                 LiteSettings.clockRight) { LiteSettings.chooseClockRight(it); onLayout() }
             choices(R.string.st_clock_size, string(R.string.st_clock_size_hint), listOf(false to R.string.st_clock_small, true to R.string.st_clock_large),
                 LiteSettings.largeClock) { LiteSettings.chooseLargeClock(it); onLayout() }
+            choices(R.string.st_clock_font_size, null, ClockFontSize.entries.map { it to it.label(context) },
+                LiteSettings.clockFontSize) { LiteSettings.chooseClockFontSize(it); onLayout() }
             choices(R.string.st_clock_weight, null, ClockWeight.choices.map { it to it.label },
                 LiteSettings.clockWeight) { LiteSettings.chooseClockWeight(it); onLayout() }
             choices(R.string.st_clock_spacing, null, ClockSpacing.entries.map { it to it.label },

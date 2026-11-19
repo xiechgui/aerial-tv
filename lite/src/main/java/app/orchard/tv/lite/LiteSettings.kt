@@ -65,6 +65,7 @@ object LiteSettings {
     val showAllNames: Boolean get() = chosenAllNames || (Kids.active && Kids.kind == KidsKind.Elders)
     var clockRight = false; private set
     var largeClock = false; private set
+    var clockFontSize = ClockFontSize.Default; private set
     var clockWeight = ClockWeight.Default; private set
     var clockSpacing = ClockSpacing.Default; private set
     var clockHours = ClockHours.System; private set
@@ -105,6 +106,7 @@ object LiteSettings {
         chosenAllNames = prefs.getBoolean("show_all_names", false)
         clockRight = prefs.getBoolean("clock_right", false)
         largeClock = prefs.getBoolean("large_clock", false)
+        clockFontSize = ClockFontSize.of(prefs.getInt("clock_font_size_percent", 0))
         clockWeight = ClockWeight.of(prefs.getString("clock_weight", null))
         clockSpacing = ClockSpacing.of(prefs.getString("clock_spacing", null))
         clockHours = ClockHours.of(prefs.getString("clock_hours", null))
@@ -136,6 +138,7 @@ object LiteSettings {
     fun chooseShowAllNames(v: Boolean) { chosenAllNames = v; put { putBoolean("show_all_names", v) } }
     fun chooseClockRight(v: Boolean) { clockRight = v; put { putBoolean("clock_right", v) } }
     fun chooseLargeClock(v: Boolean) { largeClock = v; put { putBoolean("large_clock", v) } }
+    fun chooseClockFontSize(v: ClockFontSize) { clockFontSize = v; put { putInt("clock_font_size_percent", v.percentChange) } }
     fun chooseClockWeight(v: ClockWeight) { clockWeight = v; put { putString("clock_weight", v.key) } }
     fun chooseClockSpacing(v: ClockSpacing) { clockSpacing = v; put { putString("clock_spacing", v.key) } }
     fun choosePhotoMinutes(v: Int) { if (v in PHOTO_MINUTES) { photoMinutes = v; put { putInt("photo_minutes", v) } } }

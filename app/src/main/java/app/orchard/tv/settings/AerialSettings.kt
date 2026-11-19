@@ -155,6 +155,7 @@ object AerialSettings {
 
     /** The date and weather over a big clock above the top row, instead of one small line in the corner. */
     var largeClock by mutableStateOf(false); private set
+    var clockFontSize by mutableStateOf(ClockFontSize.Default); private set
     var clockWeight by mutableStateOf(ClockWeight.Default); private set
     var clockSpacing by mutableStateOf(ClockSpacing.Default); private set
 
@@ -256,6 +257,7 @@ object AerialSettings {
         chosenColumns = prefs.getInt("home_columns", DEFAULT_HOME_COLUMNS).takeIf { it in HOME_COLUMNS } ?: DEFAULT_HOME_COLUMNS
         clockRight = prefs.getBoolean("clock_right", false)
         largeClock = prefs.getBoolean("large_clock", false)
+        clockFontSize = ClockFontSize.of(prefs.getInt("clock_font_size_percent", 0))
         clockWeight = ClockWeight.of(prefs.getString("clock_weight", null))
         clockSpacing = ClockSpacing.of(prefs.getString("clock_spacing", null))
         clockHours = ClockHours.of(prefs.getString("clock_hours", null))
@@ -356,6 +358,11 @@ object AerialSettings {
     fun chooseLargeClock(on: Boolean) {
         largeClock = on
         app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit { putBoolean("large_clock", on) }
+    }
+
+    fun chooseClockFontSize(size: ClockFontSize) {
+        clockFontSize = size
+        app.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit { putInt("clock_font_size_percent", size.percentChange) }
     }
 
     fun chooseClockWeight(weight: ClockWeight) {

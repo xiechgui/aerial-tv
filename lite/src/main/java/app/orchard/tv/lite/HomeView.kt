@@ -188,10 +188,11 @@ class HomeView(context: Context, private val host: Host) : FrameLayout(context) 
         shelfSecond = if (hasPlate && !plateNames) TILE_H + SHELF_ROW_GAP else PITCH
         val twoRowFit = canvasH - (if (hasPlate) PLATE_MARGIN_BOTTOM + PLATE_PAD_V + firstGap else ROW_NAME_ROOM) - shelfSecond - TILE_H
         val platePad = if (hasPlate) PLATE_PAD_V else 0f
+        val largeClockHeight = LARGE_CLOCK_H + clock.largeClockHeightDelta
         val newClockY = if (oneRow || !LiteSettings.largeClock) CLOCK_Y else
-            (twoRowFit - platePad - LARGE_CLOCK_H).coerceIn(if (LiteSettings.clockRight) CLOCK_Y else 28f, CLOCK_Y)
+            (twoRowFit - platePad - largeClockHeight).coerceIn(if (LiteSettings.clockRight) CLOCK_Y else 28f, CLOCK_Y)
         topRowY = when {
-            !oneRow -> maxOf(twoRowFit, if (LiteSettings.largeClock) newClockY + LARGE_CLOCK_H + platePad else 0f)
+            !oneRow -> maxOf(twoRowFit, if (LiteSettings.largeClock) newClockY + largeClockHeight + platePad else 0f)
             peek -> canvasH - PITCH - 12f - firstGap
             hasPlate -> canvasH - TILE_H - (PLATE_MARGIN_BOTTOM + PLATE_PAD_V) - firstGap
             else -> canvasH - TILE_H - 70f

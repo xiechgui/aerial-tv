@@ -327,4 +327,5 @@
     <string name="st_clock_spacing_compact">Узкий</string>
     <string name="st_clock_spacing_wide">Широкий</string>
     <string name="st_clock_typography_default">По умолчанию</string>
+    <string name="st_clock_font_size">Размер цифр</string>
 </resources>

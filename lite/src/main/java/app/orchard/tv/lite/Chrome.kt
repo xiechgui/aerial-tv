@@ -43,6 +43,9 @@ fun dateText(millis: Long = System.currentTimeMillis()): String {
 /** The weather beside the clock, once known: its glyph, the temperature, and the rest dimmed. */
 class WeatherLine(val glyph: Glyph, val celsius: Int, val place: String?, val detail: String)
 
+private const val SMALL_CLOCK_FONT_SIZE = 19f
+private const val LARGE_CLOCK_FONT_SIZE = 104f
+
 /**
  * The full app's clocks (HomeChrome): the small one, the time and the weather in one quiet line
  * level with the status pill; or the large one, as on the lock screen, the date (with the Chinese
@@ -60,11 +63,15 @@ class ClockView(context: Context) : View(context) {
 
     private var time = ""
     private var date = ""
+    private val largeFontSize get() = LARGE_CLOCK_FONT_SIZE * LiteSettings.clockFontSize.scale
+    val largeClockHeightDelta get() = (largeFontSize - LARGE_CLOCK_FONT_SIZE) * Ui.CAP_HEIGHT
     private val smallSpacing get() = 0.05f + LiteSettings.clockSpacing.offsetEm
     private val largeSpacing get() = -0.04f + LiteSettings.clockSpacing.offsetEm
 
     fun applyTypography() {
         val weight = LiteSettings.clockWeight.weight
+        smallPaint.textSize = Ui.px(SMALL_CLOCK_FONT_SIZE * LiteSettings.clockFontSize.scale)
+        bigPaint.textSize = Ui.px(largeFontSize)
         smallPaint.typeface = Ui.font(weight ?: 600)
         bigPaint.typeface = Ui.font(weight ?: 700, opticalSize = 32f)
         requestLayout()
@@ -103,11 +110,11 @@ class ClockView(context: Context) : View(context) {
     // Large clock (ShelfClock): Type.ClockDate, Type.Clock, Type.ClockDetail; shadow 0.28 black, 2 down, 18 px blur at 1080p.
     private val datePaint = Ui.text(19f, 600, display = true).shadow(0x47000000, 9f, 1f)
     private val dateDim = Ui.text(19f, 500, 0xB8FFFFFF.toInt(), display = true).shadow(0x47000000, 9f, 1f)
-    private val bigPaint = Ui.text(104f, 700, display = true).shadow(0x47000000, 9f, 1f)
+    private val bigPaint = Ui.text(LARGE_CLOCK_FONT_SIZE, 700, display = true).shadow(0x47000000, 9f, 1f)
     private val detailPaint = Ui.text(16f, 600).shadow(0x47000000, 9f, 1f)
     private val detailDim = Ui.text(16f, 500, 0xB8FFFFFF.toInt()).shadow(0x47000000, 9f, 1f)
     // Small clock (CornerClock): Type.SmallClock at Title size, 92% white; Type.Headline beside it.
-    private val smallPaint = Ui.text(19f, 600, 0xEBFFFFFF.toInt()).shadow(0x80000000.toInt(), 4f, 0f)
+    private val smallPaint = Ui.text(SMALL_CLOCK_FONT_SIZE, 600, 0xEBFFFFFF.toInt()).shadow(0x80000000.toInt(), 4f, 0f)
     private val smallWeather = Ui.text(15f, 600, 0xEBFFFFFF.toInt()).shadow(0x80000000.toInt(), 4f, 0f)
     private val glyphPaint = Paint(Paint.FILTER_BITMAP_FLAG)
 
@@ -134,7 +141,7 @@ class ClockView(context: Context) : View(context) {
             Ui.draw(c, date.substring(split), x0 + headW, y, dateDim, -0.005f)
         }
         // The time, 16 under the date's baseline to its capitals.
-        y += Ui.px(16f + 104f * Ui.CAP_HEIGHT)
+        y += Ui.px(16f + largeFontSize * Ui.CAP_HEIGHT)
         val timeStart = if (alignEnd) start(Ui.width(time, bigPaint, largeSpacing)) + Ui.px(4f) else -Ui.px(4f)
         Ui.draw(c, time, timeStart, y, bigPaint, largeSpacing)
         val w = weather ?: return

@@ -335,4 +335,5 @@
     <string name="st_clock_spacing_compact">Tight</string>
     <string name="st_clock_spacing_wide">Wide</string>
     <string name="st_clock_typography_default">Default</string>
+    <string name="st_clock_font_size">Clock Font Size</string>
 </resources>

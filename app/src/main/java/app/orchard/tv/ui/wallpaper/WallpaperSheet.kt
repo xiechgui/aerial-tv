@@ -71,6 +71,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import app.orchard.tv.R
 import app.orchard.tv.settings.AerialSettings
+import app.orchard.tv.settings.ClockFontSize
 import app.orchard.tv.settings.ClockHours
 import app.orchard.tv.settings.ClockSpacing
 import app.orchard.tv.settings.ClockWeight
@@ -263,6 +264,11 @@ fun WallpaperSheet(
                         R.string.st_clock_size, stringResource(R.string.st_clock_size_hint), note,
                         listOf(false to R.string.st_clock_small, true to R.string.st_clock_large),
                         AerialSettings.largeClock, AerialSettings::chooseLargeClock,
+                    )
+                    Choices(
+                        R.string.st_clock_font_size, null, note,
+                        ClockFontSize.entries.map { it to it.label(context) },
+                        AerialSettings.clockFontSize, AerialSettings::chooseClockFontSize,
                     )
                     Choices(
                         R.string.st_clock_weight, null, note,

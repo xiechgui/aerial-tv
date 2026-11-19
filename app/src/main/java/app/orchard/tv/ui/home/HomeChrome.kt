@@ -640,6 +640,7 @@ fun ShelfClock(
     saving: Boolean = false,
     /** The screensaver is carrying Home's wallpaper on: the date and weather go before the time moves. */
     away: Boolean = false,
+    timeFontSize: TextUnit = Type.Clock.fontSize,
 ) {
     val drift = heldDrift(saving, now)
     val shadow = Shadow(Color.Black.copy(alpha = 0.28f), Offset(0f, 2f), blurRadius = 18f)
@@ -676,10 +677,10 @@ fun ShelfClock(
         )
         BasicText(
             timeText(now),
-            style = Type.Clock.withHomeClockTypography().copy(shadow = shadow),
+            style = Type.Clock.withHomeClockTypography().copy(fontSize = timeFontSize, shadow = shadow),
             modifier = Modifier.padding(top = 16.dp)
-                .toSaverClock(toSaver, Type.Clock.fontSize, 0.dp, drift)
-                .capBox(Type.Clock.fontSize),
+                .toSaverClock(toSaver, timeFontSize, 0.dp, drift)
+                .capBox(timeFontSize),
         )
         Weather.now?.takeIf { AerialSettings.showWeather }?.let { w ->
             val place = Weather.place?.takeIf { it.length <= 12 }
@@ -715,7 +716,7 @@ private fun heldDrift(saving: Boolean, now: LocalDateTime): DpOffset {
 private const val CAP_TOP = 0.242f
 
 /** Inter's cap height (and its digits' height), as a share of the font size. */
-private const val CAP_HEIGHT = 0.727f
+internal const val CAP_HEIGHT = 0.727f
 
 /**
  * Carries Home's time to where the screensaver shows it, top right and at its size, as [progress]
@@ -777,6 +778,8 @@ private fun conditionName(kind: WeatherKind): Int = when (kind) {
 @Composable
 fun CornerClock(now: LocalDateTime, modifier: Modifier = Modifier, toSaver: () -> Float = { 0f }, saving: Boolean = false) {
     val drift = heldDrift(saving, now)
+    val timeFontSize = Type.Title.fontSize * AerialSettings.clockFontSize.scale
+    val capTop = with(LocalDensity.current) { timeFontSize.toDp() * CAP_TOP }
     val dim = Color.White.copy(alpha = 0.92f)
     val shadow = Shadow(Color.Black.copy(alpha = 0.5f), blurRadius = 8f)
     // The weather goes as the time moves to the screensaver's place.
@@ -787,8 +790,8 @@ fun CornerClock(now: LocalDateTime, modifier: Modifier = Modifier, toSaver: () -
     Row(modifier.height(34.dp), verticalAlignment = Alignment.CenterVertically) {
         BasicText(
             timeText(now),
-            style = Type.SmallClock.withHomeClockTypography().copy(fontSize = Type.Title.fontSize, color = dim, shadow = shadow),
-            modifier = Modifier.toSaverClock(toSaver, Type.Title.fontSize, Type.Title.fontSize.value.dp * CAP_TOP, drift),
+            style = Type.SmallClock.withHomeClockTypography().copy(fontSize = timeFontSize, color = dim, shadow = shadow),
+            modifier = Modifier.toSaverClock(toSaver, timeFontSize, capTop, drift),
         )
         Weather.now?.takeIf { AerialSettings.showWeather }?.let { w ->
             GlyphIcon(glyphFor(w), dim, 18.dp, aside.padding(start = 16.dp, end = 6.dp))
